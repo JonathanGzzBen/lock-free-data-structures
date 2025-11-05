@@ -22,13 +22,14 @@ class Stack {
 
 template <typename T>
 Stack<T>::Stack() {
-  top_.store(nullptr);
+  top_.store(nullptr, std::memory_order_relaxed);
 }
 
 template <typename T>
 auto Stack<T>::push(T item) -> void {
-  auto new_node = std::make_shared<Node>(std::move(item), top_.load());
-  while (!top_.compare_exchange_weak(new_node->next, std::move(new_node),
+  auto new_node = std::make_shared<Node>(std::move(item),
+                                         top_.load(std::memory_order_relaxed));
+  while (!top_.compare_exchange_weak(new_node->next, new_node,
                                      std::memory_order_release,
                                      std::memory_order_acquire)) {
     // Empty
