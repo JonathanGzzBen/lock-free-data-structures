@@ -1,15 +1,18 @@
 #include <iostream>
 
-#include "queue.cpp"
+#include "stack.cpp"
 
 auto main() -> int {
   std::cout << "Hello, World\n";
 
-  lfds::Queue<int> queue;
-  queue.push(1);
-  queue.push(2);
-  queue.push(3);
-  auto popped = queue.pop();
-  std::cout << "Popped: " << popped << "\n";
+  lfds::Stack<int> stack;
+  stack.push(1);
+  stack.push(2);
+  stack.push(3);
+
+  for (int i = 0; i < 4; i++) {
+    auto popped = stack.pop();
+    std::cout << "Popped: " << popped << "\n";
+  }
   return 0;
 }
