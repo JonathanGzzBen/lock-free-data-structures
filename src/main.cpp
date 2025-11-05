@@ -12,7 +12,9 @@ auto main() -> int {
 
   for (int i = 0; i < 4; i++) {
     auto popped = stack.pop();
-    std::cout << "Popped: " << popped << "\n";
+    if (popped) {
+      std::cout << "Popped: " << *popped << "\n";
+    }
   }
   return 0;
 }
