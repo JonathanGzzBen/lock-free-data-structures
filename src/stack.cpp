@@ -37,12 +37,12 @@ template <typename T>
 auto Stack<T>::pop() -> T {
   auto old_top = top_.load(std::memory_order_relaxed);
   while (old_top && !top_.compare_exchange_weak(old_top, old_top->next,
+                                                std::memory_order_acquire,
                                                 std::memory_order_acquire)) {
     // Empty
   }
-  T data = old_top ? old_top->data : T{};
-  delete old_top;
-  return data;
+  // Pending memory free
+  return old_top ? std::move(old_top->data) : T{};
 }
 
 }  // namespace lfds
